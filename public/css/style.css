@@ -1,0 +1,16 @@
+.twitter {
+    min-height: 90px;
+    background-color: #EEE;
+    border: 1px solid white;
+    padding-top: 10px;
+}
+
+img{
+    float: left;
+    margin-right: 10px;
+    margin-bottom:10px;
+}
+
+.screen_name {
+    font-weight: bolder;
+}
