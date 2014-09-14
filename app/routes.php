@@ -13,4 +13,5 @@
 
 
 Route::get('/','TwitterController@index');
+Route::get('search/{pseudo}', 'TwitterController@search');
 Route::post('/', 'TwitterController@show');

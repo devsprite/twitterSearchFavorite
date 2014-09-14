@@ -1,3 +1,14 @@
+body{
+    padding-top: 10px;
+}
+
+.btn-primary{
+    margin-top: 4px;
+}
+
+.pagination{
+    margin : 17px 0;
+}
 .twitter {
     min-height: 90px;
     background-color: #EEE;
