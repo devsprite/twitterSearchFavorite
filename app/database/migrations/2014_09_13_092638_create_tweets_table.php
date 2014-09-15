@@ -17,11 +17,11 @@ class CreateTweetsTable extends Migration {
 			$table->increments('id');
 			$table->integer('id_names');
 			$table->integer('id_str');
-			$table->text('screen_name');
-			$table->text('name');
-			$table->text('profile_image_url');
+			$table->string('screen_name');
+			$table->string('name');
+			$table->string('profile_image_url');
 			$table->text('text');
-			$table->text('date_tweet');
+			$table->string('date_tweet');
 			$table->timestamps();
 		});
 	}

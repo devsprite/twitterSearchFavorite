@@ -25,12 +25,17 @@ class TwitterController extends BaseController {
     {
         $db_name        = Name::where('screen_name', '=', $pseudo)->first();
         $pseudos        = Name::all();
-        $twitter        = Tweet::where('name_id', '=', $db_name->id)->paginate(20);
-        return View::make('twitter', compact('twitter', 'pseudos'))->with(['name'=>$pseudo]);
 
+        if($db_name){
+            $twitter    = Tweet::where('name_id', '=', $db_name->id)->paginate(20);
+            return View::make('twitter', compact('twitter', 'pseudos'))->with(['name'=>$pseudo]);
+        }else{
+            $erreur = 'Il n\'existe pas d\'utilisateur au nom de '.$pseudo;
+            return View::make('twitter', compact('pseudos'))->with(['name'=>$pseudo , 'erreur'=>$erreur]);
+        }
     }
 
-    public function show()
+    public function update()
     {
         $pseudos        = Name::all();
         $name           = Input::get('pseudo');

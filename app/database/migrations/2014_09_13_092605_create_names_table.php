@@ -16,9 +16,9 @@ class CreateNamesTable extends Migration {
 		{
 			$table->increments('id');
 			$table->integer('id_str');
-			$table->text('name');
-			$table->text('screen_name');
-			$table->text('profile_image_url');
+			$table->string('name');
+			$table->string('screen_name');
+			$table->string('profile_image_url');
 			$table->timestamps();
 		});
 	}
