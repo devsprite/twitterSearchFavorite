@@ -1,5 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+<<<<<<< HEAD
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Twitter's Favorites</title>
+=======
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,6 +18,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <link rel="icon" href="../../favicon.ico">
+>>>>>>> f19706e8b74b6bf724878359e39050fedbcf5f4e
 
         <title>Twitter's Favorites</title>
 
