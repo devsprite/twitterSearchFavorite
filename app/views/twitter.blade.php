@@ -8,7 +8,7 @@
         <meta name="author" content="">
         <link rel="icon" href="../../favicon.ico">
 
-        <title>Test Twitter</title>
+        <title>Twitter's Favorites</title>
 
         <!-- Bootstrap core CSS -->
         <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
