@@ -21,6 +21,24 @@ class TwitterController extends BaseController {
         return View::make('twitter', compact('pseudos'));
     }
 
+    public function searchbak($pseudo)
+    {
+        $db_name        = Name::where('screen_name', '=', $pseudo)->first();
+        //$author = Twitter::getUserTimeline(array('screen_name'=>$pseudo, 'count'=>1));
+        $req_twitter    = Twitter::getFavorites(array( 'screen_name' => $pseudo, 'count' => 5, 'format' => 'object'));
+        $twitter        = Tweet::where('name_id', '=', $db_name->id)->paginate(20);
+
+        if ( $twitter[0]->id == $req_twitter[0]->id ){
+            echo 'pareil'.$twitter[0]->id.' // '.$req_twitter[0]->id;
+        }else {
+            echo 'pas pareil ';
+        }
+
+
+
+    }
+
+
     public function search($pseudo)
     {
         $db_name        = Name::where('screen_name', '=', $pseudo)->first();
@@ -74,7 +92,7 @@ class TwitterController extends BaseController {
                 foreach ($req_twitter as $key => $value) {
                     Tweet::create(array(
                         'name_id'           =>  $name_id->id,
-                        'id_str'            =>  $value->id_str,
+                        'id_str'            =>  $value->id,
                         'screen_name'       =>  $value->user->screen_name,
                         'name'              =>  $value->user->name,
                         'profile_image_url' =>  $value->user->profile_image_url,
