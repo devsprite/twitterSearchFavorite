@@ -21,23 +21,6 @@ class TwitterController extends BaseController {
         return View::make('twitter', compact('pseudos'));
     }
 
-    public function searchbak($pseudo)
-    {
-        $db_name        = Name::where('screen_name', '=', $pseudo)->first();
-        //$author = Twitter::getUserTimeline(array('screen_name'=>$pseudo, 'count'=>1));
-        $req_twitter    = Twitter::getFavorites(array( 'screen_name' => $pseudo, 'count' => 5, 'format' => 'object'));
-        $twitter        = Tweet::where('name_id', '=', $db_name->id)->paginate(20);
-
-        if ( $twitter[0]->id == $req_twitter[0]->id ){
-            echo 'pareil'.$twitter[0]->id.' // '.$req_twitter[0]->id;
-        }else {
-            echo 'pas pareil ';
-        }
-
-
-
-    }
-
 
     public function search($pseudo)
     {
@@ -45,7 +28,8 @@ class TwitterController extends BaseController {
         $pseudos        = Name::all();
 
         if($db_name){
-            $twitter    = Tweet::where('name_id', '=', $db_name->id)->paginate(20);
+            $twitter = Tweet::where('name_id', '=', $db_name->id)->orderBy('id_str','desc')->paginate(20);
+            //$twitter = TwitterFav::updateFavoris($db_name, $pseudo);
             return View::make('twitter', compact('twitter', 'pseudos'))->with(['name'=>$pseudo]);
         }else{
             $erreur = 'Il n\'existe pas d\'utilisateur au nom de '.$pseudo;
@@ -74,32 +58,31 @@ class TwitterController extends BaseController {
                 return View::make('twitter')->with(['name'=>$name , 'erreur'=>$erreur]);
 
             }else{
-                // Le pseudo n'existe pas dans la base de donnée, on créé une entrée et on récupère ses tweets favoris
-                Name::create(array(
-                    'id_str'            =>  $author[0]->user->id_str,
-                    'screen_name'       =>  $author[0]->user->screen_name,
-                    'name'              =>  $author[0]->user->name,
-                    'profile_image_url' =>  $author[0]->user->profile_image_url
-                    ));
 
-                $name_id        = Name::where('screen_name', '=', $author[0]->user->screen_name)->first();
+                // Le pseudo n'existe pas dans la base de donnée, on créé une entrée et on récupère ses tweets favoris
+                TwitterFav::createUser($author);
+
+                $name_id = Name::where('screen_name', '=', $author[0]->user->screen_name)->first();
+
                 $req_twitter    = Twitter::getFavorites(array('screen_name' => $name, 'count' => 200, 'format' => 'object'));
                 if(isset($req_twitter->errors)){
-                    echo 'Trop de requête, veuillez patienter.';
+                    echo 'Trop de requete, veuillez patienter.';
                     exit();
                 }
 
-                foreach ($req_twitter as $key => $value) {
-                    Tweet::create(array(
-                        'name_id'           =>  $name_id->id,
-                        'id_str'            =>  $value->id,
-                        'screen_name'       =>  $value->user->screen_name,
-                        'name'              =>  $value->user->name,
-                        'profile_image_url' =>  $value->user->profile_image_url,
-                        'text'              =>  $value->text,
-                        'date_tweet'        =>  $value->created_at
-                    ));
+                while ($req_twitter != 0)
+                {
+                    // On ajoute les tweets favoris en BDD
+                    $max_id = TwitterFav::addFavoris($req_twitter, $name_id);
+
+                    $req_twitter    = Twitter::getFavorites(array('max_id' => $max_id, 'screen_name' => $name, 'count' => 200, 'format' => 'object'));
+                    if(isset($req_twitter->errors)){
+                        echo 'Trop de requete, veuillez patienter.';
+                        exit();
+                    }
+                    sleep(10);
                 }
+
                 $twitter    = Tweet::where('name_id', '=', $name_id->id)->paginate(20);
                 $pseudos    = Name::all();
                 return View::make('twitter', compact('twitter', 'pseudos'))->with(['name'=>$name]);
