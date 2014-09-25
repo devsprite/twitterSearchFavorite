@@ -66,7 +66,7 @@ class TwitterController extends BaseController {
 
                 $req_twitter    = Twitter::getFavorites(array('screen_name' => $name, 'count' => 200, 'format' => 'object'));
                 if(isset($req_twitter->errors)){
-                    echo 'Trop de requete, veuillez patienter.';
+                    echo 'Trop de requetes, veuillez patienter.';
                     exit();
                 }
 
@@ -77,7 +77,7 @@ class TwitterController extends BaseController {
 
                     $req_twitter    = Twitter::getFavorites(array('max_id' => $max_id, 'screen_name' => $name, 'count' => 200, 'format' => 'object'));
                     if(isset($req_twitter->errors)){
-                        echo 'Trop de requete, veuillez patienter.';
+                        echo 'Trop de requetes, veuillez patienter.';
                         exit();
                     }
                     sleep(10);
