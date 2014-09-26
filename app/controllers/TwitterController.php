@@ -83,7 +83,7 @@ class TwitterController extends BaseController {
                     sleep(10);
                 }
 
-                $twitter    = Tweet::where('name_id', '=', $name_id->id)->paginate(20);
+                $twitter    = Tweet::where('name_id', '=', $name_id->id)->paginate(25);
                 $pseudos    = Name::all();
                 return View::make('twitter', compact('twitter', 'pseudos'))->with(['name'=>$name]);
             }
